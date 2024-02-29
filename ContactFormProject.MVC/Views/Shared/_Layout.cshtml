@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] ContactFormProject</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/ContactFormProject.MVC.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        body{
+            background-color:whitesmoke
+        }
+
+        .fontText {
+            font-family: 'Trebuchet MS';
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+ 
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="row">
+            <div class="col-sm-1">
+
+            </div>
+            <div class="col-sm-9">
+                &copy; 2024 - ContactFormProject.MVC - aysesensoy@outlook.com.tr
+            </div>
+            <div class="col-sm-2">
+                <a href="~/cv_ayse_sensoy.pdf" class="btn btn-primary">Ayşe Şensoy</a>
+            </div>
+        </div>
+        
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

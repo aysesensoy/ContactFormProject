@@ -1,0 +1,97 @@
+﻿@model MailModel
+
+<style>
+    .mail-container {
+        border: 3px solid #ccc;
+        border-radius: 10px;
+        padding: 20px;
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    .mail-detail {
+        margin-bottom: 10px;
+    }
+
+    .mail-detail label {
+         font-weight: bold;
+     }
+
+    .btnReply:hover{
+        background-color:white;
+        color: #198754;
+    }
+
+    .iconHover:hover {
+        color: #198754;
+    }
+
+</style>
+
+<div class="row m-4" style="font-family:Trebuchet MS;">
+    <div class="col-sm-3">
+        <div class="list-group">
+            <a class="list-group-item list-group-item-action" style="background-color:dimgrey; color:white">Menü</a>
+            <a href="/Admin/IncomingMails" class="list-group-item list-group-item-action">Gelen Mail Kutusu</a>
+            <a href="/Admin/OutgoingMails" class="list-group-item list-group-item-action">Gönderilen Mail Kutusu</a>
+            <a href="/Admin/Logout" class="list-group-item list-group-item-action" style="background-color: #C11B17; color: white;">Çıkış Yap</a>
+        </div>
+    </div>
+    <div class="col-sm-9">
+        <div class="mail-container">
+            <div class="mail-detail">
+                <label>Ad Soyad:</label>
+                <span>@Model.GuestFirstName @Model.GuestLastName</span>
+            </div>
+            <div class="mail-detail">
+                <label>Mail Adresi:</label>
+                <span>@Model.GuestMailAddress</span>
+            </div>
+            <div class="mail-detail">
+                <label>Konu:</label>
+                <span>@Model.Subject</span>
+            </div>
+            <div class="mail-detail">
+                <label>İçerik:</label>
+                <p>@Html.Raw(Model.Content)</p>
+            </div>
+            <div class="mail-detail">
+                <label>Gönderim Tarihi:</label>
+                <span>@Model.SendDate.ToString("dd/MM/yyyy HH:mm")</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (Model.IsIncomingMail)
+{
+    <form method="post" asp-action="Reply" asp-controller="Admin">
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="GuestMailAddress" />
+        <input type="hidden" asp-for="Subject" />
+        <input type="hidden" asp-for="GuestFirstName" />
+        <input type="hidden" asp-for="GuestLastName" />
+
+        <div class="form-group row mt-3">
+            <label for="Content" class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-9">
+                <textarea class="form-control" id="Content" name="Content" required maxlength="500"></textarea>
+            </div>
+        </div>
+
+        <div class="form-group row mt-3">
+            <div class="col-sm-12 text-center">
+                <button type="submit" class="btn btn-success mb-2 btnReply">Yanıtla <i class="fa fa-reply iconHover"></i></button>
+            </div>
+        </div>
+    </form>
+
+
+    @section Scripts{
+    <script src="~/ckeditor/ckeditor.js"></script>
+    <script>
+        CKEDITOR.replace('Content');
+    </script>
+}
+
+}

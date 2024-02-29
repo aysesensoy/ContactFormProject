@@ -1,0 +1,77 @@
+﻿@model List<MailModel>
+
+<div class="row m-4" style="font-family:Trebuchet MS;">
+    <div class="col-sm-3">
+        <div class="list-group">
+            <a class="list-group-item list-group-item-action" style="background-color:dimgrey; color:white">Menü</a>
+            <a href="/Admin/IncomingMails" class="list-group-item list-group-item-action">Gelen Mail Kutusu</a>
+            <a href="/Admin/OutgoingMails" class="list-group-item list-group-item-action" style="background-color: lightgrey; color: white;">Gönderilen Mail Kutusu</a>
+            <a href="/Admin/Logout" class="list-group-item list-group-item-action" style="background-color: #C11B17; color: white;">Çıkış Yap</a>
+        </div>
+    </div>
+    <div class="col-sm-9">
+        <table class="table table-bordered table-advance table-hover" style="background-color:rgba(255, 255, 255, 0.5);">
+            <tr>
+                <th>Ad Soyad</th>
+                <th>Mail Adresi</th>
+                <th>Konu</th>
+                <th>Gönderim Tarihi</th>
+                <th></th>
+            </tr>
+            @foreach (var mail in Model)
+            {
+                <tr style="background-color: #FFFFCC">
+
+                    <td>@mail.GuestFirstName @mail.GuestLastName</td>
+                    <td>@mail.GuestMailAddress</td>
+                    <td>@mail.Subject</td>
+                    <td>@mail.SendDate.ToString("dd/MM/yyyy HH:mm")</td>
+                    <td id="ButtonDiv">
+                        <a href="/Admin/ReadMail?id=@mail.Id" class="btn btn-warning btn-sm"><i class="fa fa-search"></i></a>
+                        <a id="@mail.Id" class="btn btn-danger btn-sm btnDel"><i class="fa fa-trash"></i></a>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+
+
+
+@section Scripts
+    {
+    <script>
+        $(document).ready(function () {
+
+            $(document).on('click', '#ButtonDiv .btnDel', function () {
+
+                var btnId = this.id;
+                var getUrl = `DeleteMail/${btnId}`;
+
+                var result = confirm("Bu maili silmek istediğinizden emin misiniz?");
+                if (result == true) {
+                    $.ajax({
+                        type: "GET",
+                        url: getUrl,
+                        headers: {
+                            "accept": "application/json",
+                            "content-type": "application/json",
+                        },
+                        success: function (data) {
+
+                            if (data == true) {
+                                alert("Silme işlemi başarılı bir şekilde gerçekleşmiştir")
+                                $(`#${btnId}`).parent().parent().remove();
+                                location.reload();
+                            }
+                            else {
+                                alert("Silme işlemi sırasında beklenmedik bir hata oluştu!")
+                            }
+                        }
+                    });
+                }
+            });
+
+        })
+    </script>
+}

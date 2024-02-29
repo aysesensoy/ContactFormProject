@@ -1,0 +1,143 @@
+﻿
+<style>
+    .btnSubmit:hover {
+        background-color: white;
+        color: #198754;
+    }
+
+    .iconHover:hover {
+        color: #198754;
+    }
+
+    *{
+        font-family:Trebuchet MS;
+    }
+</style>
+<div class="row mt-5" style="border:solid 1px grey; border-radius:10px; background-color:#CECECE">
+    <div class="container p-4" style="border-bottom: 1px solid grey; text-align:center; font-size:20px; background-color: rgb(220,220,220)">
+        <div class="col-sm-12 text-center">
+            <h2>İletişim Formu</h2>
+        </div>
+    </div>
+<div class="col-sm-2"></div>
+    <div class="col-sm-8 mt-3">
+        <div class="row justify-content-end">
+            <div class="col-auto">
+                <a class="btn btn-warning float-right" href="/Admin/Login"><i class="fa fa-user-circle"></i> Admin Panel</a>
+            </div>
+        </div>
+<form>
+    <div class="form-group row mt-3">
+        <label for="GuestFirstName" class="col-sm-3 col-form-label fontText">Ad:</label>
+        <div class="col-sm-9">
+            <input type="text" class="form-control" id="GuestFirstName" name="GuestFirstName" maxlength="50" required>
+        </div>
+    </div>
+    <div class="form-group row mt-3">
+                <label for="GuestLastName" class="col-sm-3 col-form-label fontText">Soyad:</label>
+        <div class="col-sm-9">
+            <input type="text" class="form-control" id="GuestLastName" name="GuestLastName" maxlength="50" required>
+        </div>
+    </div>
+    <div class="form-group row mt-3">
+         <label for="GuestMailAddress" class="col-sm-3 col-form-label fontText">E-posta Adresi:</label>
+        <div class="col-sm-9 ">
+            <input type="email" class="form-control" id="GuestMailAddress" name="GuestMailAddress" maxlength="50" required>
+        </div>
+    </div>
+    <div class="form-group row mt-3">
+                <label for="Subject" class="col-sm-3 col-form-label fontText">Konu:</label>
+        <div class="col-sm-9">
+            <input type="text" class="form-control" id="Subject" name="Subject" maxlength="50" required>
+        </div>
+    </div>
+    <div class="form-group row mt-3">
+                <label for="Content" class="col-sm-3 col-form-label fontText">İçerik:</label>
+        <div class="col-sm-9">
+            <textarea class="form-control" id="Content" name="Content" required maxlength="500"></textarea>
+        </div>
+    </div>
+    <div class="form-group row mt-3">
+        <div class="col-sm-12 text-center">
+                    <a id="btnSubmit" class="btn btn-success mb-2 btnSubmit">Gönder <i class="fa fa-paper-plane iconHover"></i></a>
+        </div>
+    </div>
+</form>
+</div>
+<div class="col-sm-2"></div>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+@section Scripts
+    {
+    <script>
+        $(document).ready(function () {
+
+            $("#btnSubmit").click(function () {
+
+                let firstName = $('#GuestFirstName').val().trim();
+                let lastName = $('#GuestLastName').val().trim();
+                let email = $('#GuestMailAddress').val().trim();
+                let subject = $('#Subject').val().trim();
+                let content = $('#Content').val().trim();
+
+                //Validasyonlar
+                if (firstName === '') {
+                    alert('Lütfen adınızı girin.');
+                    return;
+                }
+                if (lastName === '') {
+                    alert('Lütfen soyadınızı girin.');
+                    return;
+                }
+                if (email === '') {
+                    alert('Lütfen email adresinizi girin.');
+                    return; 
+                }
+        
+                let emailRegex = /^([\w-\.]+@@([\w-]+\.)+[\w-]{2,4})?$/;
+                if (!emailRegex.test(email)) {
+                    alert('Lütfen geçerli bir email adresi girin.');
+                    return;
+                }
+
+                if (subject === '') {
+                    alert('Lütfen konuyu girin.');
+                    return;
+                }
+
+                if (content === '') {
+                    alert('Lütfen içeriği doldurun. ');
+                    return;
+                }
+
+                //Verilerin gönderilmesi
+                let postData = {
+                    "GuestFirstName": firstName,
+                    "GuestLastName": lastName,
+                    "GuestMailAddress": email,
+                    "Subject": subject,
+                    "Content": content
+                };
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Home/Index",
+                    data: postData,
+                    success: function (data) {
+                        if (data == true) {
+                            alert('İletiniz gönderildi.');
+                            location.reload();
+                        }
+                        else {
+                            alert('İşlem sırasında beklenmedik bir hata oluştu.');
+                            $("#Link").focus();
+                        }
+                    }
+                });
+            });
+
+        })
+    </script>
+}
